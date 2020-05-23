@@ -47,7 +47,7 @@ public class TetrisBlock : MonoBehaviour
             }
         }
 
-        if (Time.time - previonTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime))
+        /*if (Time.time - previonTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime))
         {
             transform.position += new Vector3(0, -1, 0);
             if(!ValidMove())
@@ -58,7 +58,15 @@ public class TetrisBlock : MonoBehaviour
                 FindObjectOfType<Spawner>().addTetromino();
             }
             previonTime = Time.time;
-        }
+        }*/
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        Debug.Log("OnCollisionEnter2D");
+        this.enabled = false;
+        this.GetComponent<TetrisBlock>().enabled = false;
+        //FindObjectOfType<Spawner>().addTetromino();
     }
 
     void AddToGrid()
