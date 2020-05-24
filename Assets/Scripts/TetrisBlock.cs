@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -79,9 +80,12 @@ public class TetrisBlock : MonoBehaviour
         {
             m_hasToCollide = false;
             Debug.Log("OnCollisionEnter2D");
-            FindObjectOfType<Spawner>().AddTetromino();
+            //FindObjectOfType<Spawner>().AddTetromino();
+            TouchGround(this, EventArgs.Empty);
             this.enabled = false;
             this.GetComponent<TetrisBlock>().enabled = false;
+
+            TouchGround(this, EventArgs.Empty);
         }
     }
 
@@ -122,4 +126,6 @@ public class TetrisBlock : MonoBehaviour
     {
         return GetDrag(aAcceleration * Time.fixedDeltaTime, aFinalVelocity);
     }
+
+    public event EventHandler TouchGround;
 }

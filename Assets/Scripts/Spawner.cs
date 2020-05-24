@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddTetromino();
+        //AddTetromino();
     }
 
     // Update is called once per frame
@@ -20,8 +20,8 @@ public class Spawner : MonoBehaviour
         
     }
 
-    public void AddTetromino()
+    public GameObject AddTetromino()
     {
-        Instantiate(Tetrominos[Random.Range(0, Tetrominos.Length)], transform.position, Quaternion.identity, container.transform);
+        return Instantiate(Tetrominos[Random.Range(0, Tetrominos.Length)], transform.position, Quaternion.identity, container.transform);
     }
 }
