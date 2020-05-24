@@ -14,6 +14,7 @@ public class GameLoop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        blockList = new List<GameObject>();
         //if (Input.GetKeyDown(KeyCode.Space) && isPlaying == false) { 
             Spawn();
             isPlaying = true;
@@ -33,13 +34,17 @@ public class GameLoop : MonoBehaviour
             GameObject block = spawner.AddTetromino();
             block.GetComponent<TetrisBlock>().TouchGround += OnTouchGround;
             blockList.Add(block);
+            currentBlock = true;
         }
     }
 
     void OnTouchGround(object sender, EventArgs e)
     {
         TetrisBlock block = sender as TetrisBlock;
-        Debug.Log("YES");
+        block.TouchGround -= OnTouchGround;
+        currentBlock = false;
+        Spawn();
+        
     }
 
 
