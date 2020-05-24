@@ -18,7 +18,7 @@ public class TetrisBlock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
+        //this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
         m_hasToCollide = true;
     }
 
@@ -79,7 +79,7 @@ public class TetrisBlock : MonoBehaviour
         {
             m_hasToCollide = false;
             Debug.Log("OnCollisionEnter2D");
-            FindObjectOfType<Spawner>().addTetromino();
+            FindObjectOfType<Spawner>().AddTetromino();
             this.enabled = false;
             this.GetComponent<TetrisBlock>().enabled = false;
         }
