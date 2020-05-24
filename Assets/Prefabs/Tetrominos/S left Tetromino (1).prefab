@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationPoint: {x: 0, y: 0, z: 0}
   fallTime: 0.8
+  m_Max_height: 3
 --- !u!61 &266246858043577050
 BoxCollider2D:
   m_ObjectHideFlags: 0
