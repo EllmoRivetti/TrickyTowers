@@ -11,13 +11,13 @@ public class TetrisBlock : MonoBehaviour
     public static int height = 20;
     public static int width = 10;
 
-    private float m_DragValue = 2;
+    private float m_DragValue = 3;
     private bool m_hasToCollide;
 
     // Start is called before the first frame update
     void Start()
     {
-        //this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
+        this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
         m_hasToCollide = true;
     }
 
@@ -77,11 +77,19 @@ public class TetrisBlock : MonoBehaviour
         if(m_hasToCollide)
         {
             m_hasToCollide = false;
-            Debug.Log("OnCollisionEnter2D");
-            FindObjectOfType<Spawner>().AddTetromino();
-            this.enabled = false;
-            this.GetComponent<TetrisBlock>().enabled = false;
+            ActionOnCollide(col);
         }
+    }
+
+    void ActionOnCollide(Collision2D col)
+    {
+        this.GetComponent<Rigidbody2D>().drag = 0;
+
+        FindObjectOfType<Spawner>().AddTetromino();
+
+        //Remove script usage
+        this.enabled = false;
+        this.GetComponent<TetrisBlock>().enabled = false;
     }
 
     bool ValidMove()
