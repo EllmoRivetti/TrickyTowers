@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour
 
     public GameObject[] Tetrominos;
     public GameObject container;
+    static int iDBlock = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,9 @@ public class Spawner : MonoBehaviour
 
     public GameObject AddTetromino()
     {
-        return Instantiate(Tetrominos[Random.Range(0, Tetrominos.Length)], transform.position, Quaternion.identity, container.transform);
+        GameObject tetromino = Tetrominos[Random.Range(0, Tetrominos.Length)];
+        tetromino.GetComponent<TetrisBlock>().SetId(iDBlock);
+        iDBlock++;
+        return Instantiate(tetromino, transform.position, Quaternion.identity, container.transform);
     }
 }

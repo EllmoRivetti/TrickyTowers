@@ -48,8 +48,9 @@ public class GameLoop : MonoBehaviour
         TetrisBlock block = sender as TetrisBlock;
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
-        Spawn();
-        
+        Debug.Log(block.GetID());
+        //blockList.Remove(blockBO);
+        Spawn();        
     }
 
 
