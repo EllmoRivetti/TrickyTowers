@@ -55,7 +55,6 @@ public class TetrisBlock : MonoBehaviour
         {
             m_hasToCollide = false;
             ActionOnCollide(col);
-      
         }
     }
 
