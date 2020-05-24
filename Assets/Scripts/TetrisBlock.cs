@@ -12,10 +12,14 @@ public class TetrisBlock : MonoBehaviour
     public static int width = 10;
     private static Transform[,] grid = new Transform[width, height];
 
+    private float m_DragValue = 2;
+    private bool m_hasToCollide;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
+        m_hasToCollide = true;
     }
 
     // Update is called once per frame
@@ -46,6 +50,14 @@ public class TetrisBlock : MonoBehaviour
                 transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
             }
         }
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue * 10);
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
+        }
 
         /*if (Time.time - previonTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime))
         {
@@ -63,10 +75,14 @@ public class TetrisBlock : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("OnCollisionEnter2D");
-        this.enabled = false;
-        this.GetComponent<TetrisBlock>().enabled = false;
-        //FindObjectOfType<Spawner>().addTetromino();
+        if(m_hasToCollide)
+        {
+            m_hasToCollide = false;
+            Debug.Log("OnCollisionEnter2D");
+            FindObjectOfType<Spawner>().addTetromino();
+            this.enabled = false;
+            this.GetComponent<TetrisBlock>().enabled = false;
+        }
     }
 
     void AddToGrid()
@@ -96,5 +112,14 @@ public class TetrisBlock : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    public static float GetDrag(float aVelocityChange, float aFinalVelocity)
+    {
+        return aVelocityChange / ((aFinalVelocity + aVelocityChange) * Time.fixedDeltaTime);
+    }
+    public static float GetDragFromAcceleration(float aAcceleration, float aFinalVelocity)
+    {
+        return GetDrag(aAcceleration * Time.fixedDeltaTime, aFinalVelocity);
     }
 }
