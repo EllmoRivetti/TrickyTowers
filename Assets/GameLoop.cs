@@ -33,6 +33,7 @@ public class GameLoop : MonoBehaviour
         {
             GameObject block = spawner.AddTetromino();
             block.GetComponent<TetrisBlock>().TouchGround += OnTouchGround;
+            block.GetComponent<TetrisBlock>().TouchRemover += OnTouchRemover;
             blockList.Add(block);
             currentBlock = true;
         }
@@ -43,10 +44,18 @@ public class GameLoop : MonoBehaviour
         TetrisBlock block = sender as TetrisBlock;
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
-        Debug.Log(block.GetID());
-        //blockList.Remove(blockBO);
+
         Spawn();        
     }
 
+    void OnTouchRemover(object sender, EventArgs e)
+    {
+        TetrisBlock block = sender as TetrisBlock;
+        block.TouchRemover -= OnTouchRemover;
+        currentBlock = false;
+        Debug.Log("avant" + blockList.Count);
+        blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
+        Debug.Log("apres" + blockList.Count);
+    }
 
 }

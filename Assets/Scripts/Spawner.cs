@@ -24,8 +24,12 @@ public class Spawner : MonoBehaviour
     public GameObject AddTetromino()
     {
         GameObject tetromino = Tetrominos[Random.Range(0, Tetrominos.Length)];
-        tetromino.GetComponent<TetrisBlock>().SetId(iDBlock);
         iDBlock++;
         return Instantiate(tetromino, transform.position, Quaternion.identity, container.transform);
+    }
+
+    public int getIdNb()
+    {
+        return iDBlock;
     }
 }

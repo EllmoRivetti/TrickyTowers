@@ -9,7 +9,7 @@ public class TetrisBlock : MonoBehaviour
 
     private float m_DragValue = 3;
     public bool m_hasToCollide;
-    private int ID;
+    public int ID;
 
     [SerializeField]
     private int m_Max_height;
@@ -21,6 +21,8 @@ public class TetrisBlock : MonoBehaviour
         this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
         m_hasToCollide = true;
         tag = "moving";
+        ID = FindObjectsOfType<Spawner>()[0].getIdNb();
+
     }
 
     // Update is called once per frame
@@ -54,6 +56,7 @@ public class TetrisBlock : MonoBehaviour
         if(m_hasToCollide)
         {
             m_hasToCollide = false;
+
             ActionOnCollide(col);
       
         }
@@ -63,9 +66,16 @@ public class TetrisBlock : MonoBehaviour
     {
         this.GetComponent<Rigidbody2D>().drag = 0;
         tag = "set";
+        /*Debug.Log("test");
+        Debug.Log(col.gameObject.name);
+        if (col.gameObject.name == "base") {
+            
+            TouchGround(this, EventArgs.Empty);
+        }
+        else
+            TouchRemover(this, EventArgs.Empty);*/
 
         TouchGround(this, EventArgs.Empty);
-
         //Remove script usage
         this.enabled = false;
         this.GetComponent<TetrisBlock>().enabled = false;
@@ -90,4 +100,5 @@ public class TetrisBlock : MonoBehaviour
     }
 
     public event EventHandler TouchGround;
+    public event EventHandler TouchRemover;
 }
