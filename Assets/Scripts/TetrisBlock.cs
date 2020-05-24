@@ -10,7 +10,6 @@ public class TetrisBlock : MonoBehaviour
     public float fallTime = 0.8f;
     public static int height = 20;
     public static int width = 10;
-    private static Transform[,] grid = new Transform[width, height];
 
     private float m_DragValue = 2;
     private bool m_hasToCollide;
@@ -85,17 +84,6 @@ public class TetrisBlock : MonoBehaviour
         }
     }
 
-    void AddToGrid()
-    {
-        foreach (Transform children in transform)
-        {
-            int roundedX = Mathf.RoundToInt(children.transform.position.x);
-            int roundedY = Mathf.RoundToInt(children.transform.position.y);
-
-            grid[roundedX, roundedY] = children;
-        }
-    }
-
     bool ValidMove()
     {
         foreach(Transform children in transform)
@@ -107,9 +95,6 @@ public class TetrisBlock : MonoBehaviour
             {
                 return false;
             }
-
-            if (grid[roundedX, roundedY] != null)
-                return false;
         }
         return true;
     }
