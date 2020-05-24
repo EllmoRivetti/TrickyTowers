@@ -7,19 +7,16 @@ public class TetrisBlock : MonoBehaviour
 {
     public Vector3 rotationPoint;
 
-    private float previonTime;
-    public float fallTime = 0.8f;
-    public static int height = 20;
-    public static int width = 10;
-    private static Transform[,] grid = new Transform[width, height];
+    private float m_DragValue = 3;
+    public bool m_hasToCollide;
 
-    private float m_DragValue = 2;
-    private bool m_hasToCollide;
+    [SerializeField]
+    private int m_Max_height;
 
     // Start is called before the first frame update
     void Start()
     {
-        //this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
+        this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
         m_hasToCollide = true;
     }
 
@@ -29,27 +26,15 @@ public class TetrisBlock : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             transform.position += new Vector3(-1, 0, 0);
-            if(!ValidMove())
-            {
-                transform.position -= new Vector3(-1, 0, 0);
-            }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             transform.position += new Vector3(1, 0, 0);
-            if (!ValidMove())
-            {
-                transform.position -= new Vector3(1, 0, 0);
-            }
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //Appel de "transform.TransformPoint" pour passer de coordonnées locale à globale
             transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
-            if (!ValidMove())
-            {
-                transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
-            }
         }
         else if(Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -59,19 +44,6 @@ public class TetrisBlock : MonoBehaviour
         {
             this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
         }
-
-        /*if (Time.time - previonTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime))
-        {
-            transform.position += new Vector3(0, -1, 0);
-            if(!ValidMove())
-            {
-                transform.position -= new Vector3(0, -1, 0);
-                AddToGrid();
-                this.enabled = false;
-                FindObjectOfType<Spawner>().addTetromino();
-            }
-            previonTime = Time.time;
-        }*/
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -79,43 +51,19 @@ public class TetrisBlock : MonoBehaviour
         if(m_hasToCollide)
         {
             m_hasToCollide = false;
-            Debug.Log("OnCollisionEnter2D");
-            //FindObjectOfType<Spawner>().AddTetromino();
-            TouchGround(this, EventArgs.Empty);
-            this.enabled = false;
-            this.GetComponent<TetrisBlock>().enabled = false;
-
-            TouchGround(this, EventArgs.Empty);
+            ActionOnCollide(col);
         }
     }
 
-    void AddToGrid()
+    public void ActionOnCollide(Collision2D col)
     {
-        foreach (Transform children in transform)
-        {
-            int roundedX = Mathf.RoundToInt(children.transform.position.x);
-            int roundedY = Mathf.RoundToInt(children.transform.position.y);
+        this.GetComponent<Rigidbody2D>().drag = 0;
 
-            grid[roundedX, roundedY] = children;
-        }
-    }
+        TouchGround(this, EventArgs.Empty);
 
-    bool ValidMove()
-    {
-        foreach(Transform children in transform)
-        {
-            int roundedX = Mathf.RoundToInt(children.transform.position.x);
-            int roundedY = Mathf.RoundToInt(children.transform.position.y);
-
-            if(roundedX < 0 || roundedX >= width || roundedY < 0 || roundedY >= height)
-            {
-                return false;
-            }
-
-            if (grid[roundedX, roundedY] != null)
-                return false;
-        }
-        return true;
+        //Remove script usage
+        this.enabled = false;
+        this.GetComponent<TetrisBlock>().enabled = false;
     }
 
     public static float GetDrag(float aVelocityChange, float aFinalVelocity)
