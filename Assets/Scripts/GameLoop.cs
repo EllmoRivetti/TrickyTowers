@@ -8,6 +8,8 @@ using UnityEngine;
 public class GameLoop : MonoBehaviour
 {
     public Spawner spawner;
+    public Camera camera;
+
     private bool isPlaying = false;
     private List<GameObject> blockList;
     private bool currentBlock = false;
@@ -24,7 +26,7 @@ public class GameLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void Spawn()
@@ -57,5 +59,4 @@ public class GameLoop : MonoBehaviour
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
         Debug.Log("apres" + blockList.Count);
     }
-
 }
