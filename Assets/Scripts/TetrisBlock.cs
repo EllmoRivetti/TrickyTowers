@@ -9,15 +9,18 @@ public class TetrisBlock : MonoBehaviour
 
     private float m_DragValue = 3;
     public bool m_hasToCollide;
+    private int ID;
 
     [SerializeField]
     private int m_Max_height;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
         m_hasToCollide = true;
+        tag = "moving";
     }
 
     // Update is called once per frame
@@ -25,11 +28,11 @@ public class TetrisBlock : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            transform.position += new Vector3(-1, 0, 0);
+            transform.position += new Vector3(-0.5f, 0, 0);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            transform.position += new Vector3(1, 0, 0);
+            transform.position += new Vector3(0.5f, 0, 0);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -52,18 +55,21 @@ public class TetrisBlock : MonoBehaviour
         {
             m_hasToCollide = false;
             ActionOnCollide(col);
+      
         }
     }
 
     public void ActionOnCollide(Collision2D col)
     {
         this.GetComponent<Rigidbody2D>().drag = 0;
+        tag = "set";
 
         TouchGround(this, EventArgs.Empty);
 
         //Remove script usage
         this.enabled = false;
         this.GetComponent<TetrisBlock>().enabled = false;
+      
     }
 
     public static float GetDrag(float aVelocityChange, float aFinalVelocity)
@@ -73,6 +79,14 @@ public class TetrisBlock : MonoBehaviour
     public static float GetDragFromAcceleration(float aAcceleration, float aFinalVelocity)
     {
         return GetDrag(aAcceleration * Time.fixedDeltaTime, aFinalVelocity);
+    }
+    public void SetId(int id)
+    {
+        this.ID = id;
+    }
+    public int GetID()
+    {
+        return this.ID;
     }
 
     public event EventHandler TouchGround;
