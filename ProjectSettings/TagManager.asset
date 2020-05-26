@@ -8,6 +8,7 @@ TagManager:
   - set
   - spawner
   - min_distance
+  - base
   layers:
   - Default
   - TransparentFX

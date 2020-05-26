@@ -3,24 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [RequireComponent(typeof(PowerUp))]
 public class GameLoop : MonoBehaviour
 {
     public Spawner spawner;
     public Camera camera;
 
-    private bool isPlaying = false;
     private List<GameObject> blockList;
     private bool currentBlock = false;
     // Start is called before the first frame update
     void Start()
     {
         blockList = new List<GameObject>();
-        //if (Input.GetKeyDown(KeyCode.Space) && isPlaying == false) { 
-            Spawn();
-            isPlaying = true;
-        //}
+        Spawn();
     }
 
     // Update is called once per frame
@@ -53,10 +48,11 @@ public class GameLoop : MonoBehaviour
     void OnTouchRemover(object sender, EventArgs e)
     {
         TetrisBlock block = sender as TetrisBlock;
+        GameObject go = sender as GameObject;
         block.TouchRemover -= OnTouchRemover;
         currentBlock = false;
-        Debug.Log("avant" + blockList.Count);
+        Debug.Log("avant " + blockList.Count);
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
-        Debug.Log("apres" + blockList.Count);
+        Debug.Log("apres " + blockList.Count);
     }
 }

@@ -65,20 +65,16 @@ public class TetrisBlock : MonoBehaviour
     {
         this.GetComponent<Rigidbody2D>().drag = 0;
         tag = "set";
-        /*Debug.Log("test");
-        Debug.Log(col.gameObject.name);
-        if (col.gameObject.name == "base") {
-            
-            TouchGround(this, EventArgs.Empty);
-        }
-        else
-            TouchRemover(this, EventArgs.Empty);*/
-
         TouchGround(this, EventArgs.Empty);
         //Remove script usage
         this.enabled = false;
         this.GetComponent<TetrisBlock>().enabled = false;
       
+    }
+
+    public void TouchedRemover()
+    {
+        TouchRemover(this, EventArgs.Empty);
     }
 
     public static float GetDrag(float aVelocityChange, float aFinalVelocity)

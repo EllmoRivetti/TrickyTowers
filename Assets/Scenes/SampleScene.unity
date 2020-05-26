@@ -423,6 +423,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1256478547}
     m_Modifications:
+    - target: {fileID: 784820154753473262, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 1068386799017400754, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 3973452916669886304, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 4711727274786735188, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483852203598834284, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
     - target: {fileID: 6632293104951086643, guid: 28680fbc859608b4b9da707bf964e370,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -478,9 +503,39 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7021850363202176420, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
     - target: {fileID: 7480896514876967888, guid: 28680fbc859608b4b9da707bf964e370,
         type: 3}
       propertyPath: m_Name
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 7480896514876967888, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 7638485237325771457, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870465994880539141, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011102334280609473, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
+      value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 8172666293009558831, guid: 28680fbc859608b4b9da707bf964e370,
+        type: 3}
+      propertyPath: m_TagString
       value: base
       objectReference: {fileID: 0}
     m_RemovedComponents: []
