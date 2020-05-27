@@ -12,23 +12,62 @@ public class GameLoop : MonoBehaviour
     private List<GameObject> blockList;
     private bool currentBlock = false;
 
-    private float up_distance = 20f;
-    private float down_distance = 30f;
+    [SerializeField]
+    private GameObject tetrominos_parent;
 
-    // Start is called before the first frame update
+    private float up_distance;
+    private float down_distance;
+
+
+    //Player Stats
+    public int max_health;
+    private int current_health;
+
+    private int score ;
+
+    //Instanciation
     void Start()
     {
         blockList = new List<GameObject>();
+        
+        //Set camera movement distance
+        up_distance = 20f;
+        down_distance = 30f;
+
+        //Set player stats
+        current_health = max_health;
+        score = 0;
+        //Spawn first brick
         Spawn();
     }
 
-    // Update is called once per frame
+    public void ResetGame()
+    {
+        foreach (Transform child in tetrominos_parent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        currentBlock = false;
+        Start();
+    }
+
+    public void EndGame()
+    {
+        blockList.Clear();
+        foreach (Transform child in tetrominos_parent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        };
+    }
+
+    #region Game Loop
     void FixedUpdate()
     {
+        //Check highest block
         float max_height = 0;
         foreach (GameObject g in blockList)
         {
-            if(g.tag == "set")
+            if (g.tag == "set")
             {
                 if (max_height < g.transform.position.y)
                 {
@@ -37,9 +76,7 @@ public class GameLoop : MonoBehaviour
             }
         }
 
-        //Debug.Log("Max height: " + max_height);
-        //Debug.Log("spawner height: " + spawner.transform.position.y);
-        
+        //Move camera according to previous check
         if (spawner.transform.position.y - 15 > max_height)
         {
             DownSpawnnerAndCam();
@@ -49,7 +86,7 @@ public class GameLoop : MonoBehaviour
             UpSpawnnerAndCam();
         }
     }
-
+   
     void Spawn()
     {
         if (!currentBlock)
@@ -68,6 +105,15 @@ public class GameLoop : MonoBehaviour
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
 
+        Debug.Log("Touched: " + block.transform.position.y);
+        Debug.Log("Old Score: " + this.score);
+        if (block.transform.position.y + 20 > score)
+        {
+            this.score = (int)block.transform.position.y + 20;
+            Debug.Log("Score: " + this.score);
+        }
+            
+
         Spawn();        
     }
 
@@ -80,8 +126,15 @@ public class GameLoop : MonoBehaviour
         //Debug.Log("avant " + blockList.Count);
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
         //Debug.Log("apres " + blockList.Count);
+
+        Debug.Log("Lost Health");
+        this.current_health--;
+        Debug.Log("Current Health: " + this.current_health);
     }
 
+    #endregion
+
+    #region Camera and Spawner utility functions
     private void UpSpawnnerAndCam()
     {
         UpSpawnner();
@@ -121,4 +174,22 @@ public class GameLoop : MonoBehaviour
     {
         transform.position = Vector3.Lerp(transform.position, vec, speed * Time.deltaTime);
     }
+    #endregion
+
+    #region Getters
+    public int GetScore()
+    {
+        return this.score;
+    }
+
+    public int GetMaxHealth()
+    {
+        return this.max_health;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return this.current_health;
+    }
+    #endregion
 }
