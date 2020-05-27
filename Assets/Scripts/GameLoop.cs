@@ -51,8 +51,6 @@ public class GameLoop : MonoBehaviour
         GameObject go = sender as GameObject;
         block.TouchRemover -= OnTouchRemover;
         currentBlock = false;
-        Debug.Log("avant " + blockList.Count);
-        blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
-        Debug.Log("apres " + blockList.Count);
+        blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID() == block.GetID()));
     }
 }
