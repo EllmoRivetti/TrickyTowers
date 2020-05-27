@@ -105,12 +105,9 @@ public class GameLoop : MonoBehaviour
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
 
-        Debug.Log("Touched: " + block.transform.position.y);
-        Debug.Log("Old Score: " + this.score);
         if (block.transform.position.y + 20 > score)
         {
             this.score = (int)block.transform.position.y + 20;
-            Debug.Log("Score: " + this.score);
         }
             
 
@@ -123,13 +120,9 @@ public class GameLoop : MonoBehaviour
         GameObject go = sender as GameObject;
         block.TouchRemover -= OnTouchRemover;
         currentBlock = false;
-        //Debug.Log("avant " + blockList.Count);
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
-        //Debug.Log("apres " + blockList.Count);
 
-        Debug.Log("Lost Health");
         this.current_health--;
-        Debug.Log("Current Health: " + this.current_health);
     }
 
     #endregion
