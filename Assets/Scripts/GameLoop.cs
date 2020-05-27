@@ -11,19 +11,82 @@ public class GameLoop : MonoBehaviour
 
     private List<GameObject> blockList;
     private bool currentBlock = false;
-    // Start is called before the first frame update
+
+    [SerializeField]
+    private GameObject tetrominos_parent;
+
+    private float up_distance;
+    private float down_distance;
+
+
+    //Player Stats
+    public int max_health;
+    private int current_health;
+
+    private int score ;
+
+    //Instanciation
     void Start()
     {
         blockList = new List<GameObject>();
+        
+        //Set camera movement distance
+        up_distance = 20f;
+        down_distance = 30f;
+
+        //Set player stats
+        current_health = max_health;
+        score = 0;
+        //Spawn first brick
         Spawn();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ResetGame()
     {
-
+        foreach (Transform child in tetrominos_parent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        currentBlock = false;
+        Start();
     }
 
+    public void EndGame()
+    {
+        blockList.Clear();
+        foreach (Transform child in tetrominos_parent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        };
+    }
+
+    #region Game Loop
+    void FixedUpdate()
+    {
+        //Check highest block
+        float max_height = 0;
+        foreach (GameObject g in blockList)
+        {
+            if (g.tag == "set")
+            {
+                if (max_height < g.transform.position.y)
+                {
+                    max_height = g.transform.position.y;
+                }
+            }
+        }
+
+        //Move camera according to previous check
+        if (spawner.transform.position.y - 15 > max_height)
+        {
+            DownSpawnnerAndCam();
+        }
+        else if (spawner.transform.position.y - 13 < max_height)
+        {
+            UpSpawnnerAndCam();
+        }
+    }
+   
     void Spawn()
     {
         if (!currentBlock)
@@ -42,6 +105,12 @@ public class GameLoop : MonoBehaviour
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
 
+        if (block.transform.position.y + 20 > score)
+        {
+            this.score = (int)block.transform.position.y + 20;
+        }
+            
+
         Spawn();        
     }
 
@@ -51,6 +120,69 @@ public class GameLoop : MonoBehaviour
         GameObject go = sender as GameObject;
         block.TouchRemover -= OnTouchRemover;
         currentBlock = false;
-        blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID() == block.GetID()));
+        blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
+
+        this.current_health--;
     }
+
+    #endregion
+
+    #region Camera and Spawner utility functions
+    private void UpSpawnnerAndCam()
+    {
+        UpSpawnner();
+        UpCamera();
+    }
+
+    private void UpSpawnner()
+    {
+        //up spawner
+        MoveObject(spawner.transform, new Vector3(this.spawner.transform.position.x, this.spawner.transform.position.y + up_distance, this.spawner.transform.position.z), 0.3f);
+    }
+
+    private void UpCamera()
+    {
+        MoveObject(this.camera.transform, new Vector3(this.camera.transform.position.x, this.camera.transform.position.y + up_distance, this.camera.transform.position.z), 0.3f);
+    }
+
+    private void DownSpawnnerAndCam()
+    {
+        DownSpawnner();
+        DownCamera();
+    }
+
+    private void DownSpawnner()
+    {
+        //Down spawner
+        MoveObject(this.spawner.transform, new Vector3(this.spawner.transform.position.x, this.spawner.transform.position.y - down_distance, this.spawner.transform.position.z), 0.4f);
+    }
+
+    private void DownCamera()
+    {
+        //Down camera
+        MoveObject(this.camera.transform, new Vector3(this.camera.transform.position.x, this.camera.transform.position.y - down_distance, this.camera.transform.position.z), 0.4f);
+    }
+
+    private void MoveObject(Transform transform, Vector3 vec, float speed)
+    {
+        transform.position = Vector3.Lerp(transform.position, vec, speed * Time.deltaTime);
+    }
+    #endregion
+
+    #region Getters
+    public int GetScore()
+    {
+        return this.score;
+    }
+
+    public int GetMaxHealth()
+    {
+        return this.max_health;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return this.current_health;
+    }
+    #endregion
 }
