@@ -11,9 +11,12 @@ public class GameLoop : MonoBehaviour
 
     private List<GameObject> blockList;
     private bool currentBlock = false;
+    private GameObject lastBlock;
 
     [SerializeField]
     private GameObject tetrominos_parent;
+    private PowerUp powerUp;
+    public Transform trash;
 
 
     private float up_distance;
@@ -30,10 +33,14 @@ public class GameLoop : MonoBehaviour
 
     private int score ;
 
+    private bool racine = false;
+    private bool freeze = false;
+
     //Instanciation
     void Start()
     {
         blockList = new List<GameObject>();
+        powerUp = this.GetComponent<PowerUp>();
         
         //Set camera movement distance
         up_distance = 20f;
@@ -66,10 +73,45 @@ public class GameLoop : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         };
     }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (racine)
+            {
+                Debug.Log("Racine désactivée");
+            }
+            else
+            {
+                Debug.Log("Racine activée");
+            }
+            racine = !racine;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (freeze)
+            {
+                Debug.Log("Freeze désactivée");
+            }
+            else
+            {
+                Debug.Log("Freeze activée");
+            }
+            freeze = !freeze;
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Thunder();
+        }
+    }
 
     #region Game Loop
     void FixedUpdate()
     {
+
+        
         //Check highest block
         float max_height = 0;
         foreach (GameObject g in blockList)
@@ -92,6 +134,7 @@ public class GameLoop : MonoBehaviour
         {
             UpSpawnnerAndCam();
         }
+               
     }
    
     void Spawn()
@@ -116,8 +159,17 @@ public class GameLoop : MonoBehaviour
         {
             this.score = (int)block.transform.position.y + 17;
         }
-            
 
+        if (racine)
+        {
+            if(block.GetIdList().Count>0)
+                powerUp.ActivateRacine(block.gameObject, blockList, block.GetIdList());
+        }
+        if (freeze)
+        {
+            powerUp.Brick(block.gameObject);
+        }
+        lastBlock = block.gameObject;
         Spawn();        
     }
 
@@ -134,6 +186,13 @@ public class GameLoop : MonoBehaviour
             last_loss_brick_time = Time.time + cooldown_duration;
             this.current_health--;
         }
+    }
+
+    private void Thunder()
+    {
+        Debug.Log("ZEUS");
+        lastBlock.transform.position = trash.position;
+        this.current_health++;
     }
 
     #endregion

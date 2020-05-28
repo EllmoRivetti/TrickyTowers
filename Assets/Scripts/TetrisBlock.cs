@@ -148,6 +148,11 @@ public class TetrisBlock : MonoBehaviour
             }
         }
     }
+
+    public List<int> GetIdList()
+    {
+        return idList;
+    }
     
 
 
