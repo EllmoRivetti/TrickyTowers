@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 1337224982880805740}
   - component: {fileID: 611323243315323568}
   - component: {fileID: 9083631770565426564}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: S right Tetromino
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,6 +374,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {x: 0, y: 0, z: 0}
+  blocks:
+  - {fileID: 1337224981592318387}
+  - {fileID: 1337224982212722912}
+  - {fileID: 1337224981300652793}
+  - {fileID: 1337224981271174445}
+  tetrominoLayer:
+    serializedVersion: 2
+    m_Bits: 0
   m_hasToCollide: 0
   ID: 0
   m_Max_height: 3

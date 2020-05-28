@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 536179748394893029}
   - component: {fileID: 2276800761404087557}
   - component: {fileID: 761744975495385832}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: I Tetromino
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +374,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {x: 0.5, y: -0.5, z: 0}
+  blocks:
+  - {fileID: 536179747527343162}
+  - {fileID: 536179747712392553}
+  - {fileID: 536179746745268080}
+  - {fileID: 536179746783150244}
+  tetrominoLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   m_hasToCollide: 0
+  ID: 0
   m_Max_height: 4
 --- !u!61 &2276800761404087557
 BoxCollider2D:

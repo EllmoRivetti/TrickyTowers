@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6232640316303836384}
   - component: {fileID: 104807450389473742}
   - component: {fileID: 5024858471584883838}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: L right Tetromino
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {x: 0, y: 0, z: 0}
+  blocks:
+  - {fileID: 6232640317743711807}
+  - {fileID: 6232640316988696428}
+  - {fileID: 6232640317884386677}
+  - {fileID: 6232640317913348769}
+  tetrominoLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   m_hasToCollide: 0
+  ID: 0
   m_Max_height: 3
 --- !u!50 &104807450389473742
 Rigidbody2D:

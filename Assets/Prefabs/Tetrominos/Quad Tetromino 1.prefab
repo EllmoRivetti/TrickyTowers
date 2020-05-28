@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 7248290821305336448}
   - component: {fileID: 6947008246442818323}
   - component: {fileID: 4470626620380541748}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Quad Tetromino 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {x: 0.5, y: 0.5, z: 0}
+  blocks:
+  - {fileID: 7248290820042047583}
+  - {fileID: 7248290821971321100}
+  - {fileID: 7248290820807609109}
+  - {fileID: 7248290820769463489}
+  tetrominoLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   m_hasToCollide: 0
+  ID: 0
   m_Max_height: 2
 --- !u!61 &6947008246442818323
 BoxCollider2D:
