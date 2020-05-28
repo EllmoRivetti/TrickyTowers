@@ -111,9 +111,9 @@ public class GameLoop : MonoBehaviour
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
 
-        if (block.transform.position.y + 20 > score)
+        if (block.transform.position.y + 17 > score)
         {
-            this.score = (int)block.transform.position.y + 20;
+            this.score = (int)block.transform.position.y + 17;
         }
             
 
