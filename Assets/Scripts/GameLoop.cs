@@ -23,6 +23,10 @@ public class GameLoop : MonoBehaviour
     public int max_health;
     private int current_health;
 
+    private float last_loss_brick_time;
+
+    private float cooldown_duration = 3f;
+
     private int score ;
 
     //Instanciation
@@ -37,6 +41,8 @@ public class GameLoop : MonoBehaviour
         //Set player stats
         current_health = max_health;
         score = 0;
+        last_loss_brick_time = Time.time + cooldown_duration;
+
         //Spawn first brick
         Spawn();
     }
@@ -122,7 +128,11 @@ public class GameLoop : MonoBehaviour
         currentBlock = false;
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
 
-        this.current_health--;
+        if(Time.time > last_loss_brick_time)
+        {
+            last_loss_brick_time = Time.time + cooldown_duration;
+            this.current_health--;
+        }
     }
 
     #endregion
