@@ -16,9 +16,8 @@ public class PowerUp : MonoBehaviour
         
     }
 
-    public void ActivateRacine(GameObject main, List<GameObject> blocklist, List<int> listId)
+    public void ActivateRoot(GameObject main, List<GameObject> blocklist, List<int> listId)
     {
-        Debug.Log("On racine pas nous");
         List<GameObject> newList = new List<GameObject>();
         foreach(GameObject go in blocklist)
         {
@@ -37,9 +36,15 @@ public class PowerUp : MonoBehaviour
 
     public void Brick(GameObject main)
     {
-        Debug.Log("FREEZE");
         main.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+    }
 
+    public enum Powerups
+    {
+        None,
+        Roots,
+        Bricks,
+        Thunder
     }
 
 }

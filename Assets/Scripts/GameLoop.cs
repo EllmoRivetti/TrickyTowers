@@ -33,8 +33,17 @@ public class GameLoop : MonoBehaviour
 
     private int score ;
 
-    private bool racine = false;
-    private bool freeze = false;
+    private int next_score_for_pwr;//Next score value needed to have power up 
+    private int next_score_for_pwr_add_value = 15; //Value used to add new score objective (default +15)
+
+    private bool root = false;
+    private bool bricks = false;
+
+    private PowerUp.Powerups current_powerup;
+
+    
+
+
 
     //Instanciation
     void Start()
@@ -49,7 +58,11 @@ public class GameLoop : MonoBehaviour
         //Set player stats
         current_health = max_health;
         score = 0;
+        next_score_for_pwr = next_score_for_pwr_add_value;
         last_loss_brick_time = Time.time + cooldown_duration;
+
+        //Set current power up
+        current_powerup = PowerUp.Powerups.Roots;
 
         //Spawn first brick
         Spawn();
@@ -73,45 +86,69 @@ public class GameLoop : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         };
     }
-    public void Update()
+    /*public void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (racine)
+            if (root)
             {
-                Debug.Log("Racine désactivée");
+                Debug.Log("root désactivée");
             }
             else
             {
-                Debug.Log("Racine activée");
+                Debug.Log("root activée");
             }
-            racine = !racine;
+            root = !root;
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (freeze)
+            if (bricks)
             {
-                Debug.Log("Freeze désactivée");
+                Debug.Log("bricks désactivée");
             }
             else
             {
-                Debug.Log("Freeze activée");
+                Debug.Log("bricks activée");
             }
-            freeze = !freeze;
+            bricks = !bricks;
         }
 
         if (Input.GetKeyDown(KeyCode.T))
         {
             Thunder();
         }
-    }
+    }*/
 
     #region Game Loop
-    void FixedUpdate()
+    void Update()
     {
+        //Check for powerup application
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space pressed");
+            switch (this.current_powerup)
+            {
+                case PowerUp.Powerups.Roots:
+                    Debug.Log("Roots !");
+                    root = true;
+                    break;
+                case PowerUp.Powerups.Thunder:
+                    Debug.Log("Thunder !");
+                    Thunder();
+                    break;
+                case PowerUp.Powerups.Bricks:
+                    Debug.Log("Bricks !");
+                    bricks = true;
+                    break;
+                default:
+                    Debug.Log("None...");
+                    break;
+            }
 
-        
+            this.current_powerup = PowerUp.Powerups.None;
+        }
+
         //Check highest block
         float max_height = 0;
         foreach (GameObject g in blockList)
@@ -155,18 +192,21 @@ public class GameLoop : MonoBehaviour
         block.TouchGround -= OnTouchGround;
         currentBlock = false;
 
-        if (block.transform.position.y + 17 > score)
+        if (block.transform.position.y + 17 > score) // Harcoded value to create a coherent score (pas fou je sais)
         {
             this.score = (int)block.transform.position.y + 17;
+            CheckScoreForPowerUp();
         }
 
-        if (racine)
+        if (root)
         {
-            if(block.GetIdList().Count>0)
-                powerUp.ActivateRacine(block.gameObject, blockList, block.GetIdList());
+            root = false;
+            if (block.GetIdList().Count > 0)
+                powerUp.ActivateRoot(block.gameObject, blockList, block.GetIdList());
         }
-        if (freeze)
+        if (bricks)
         {
+            bricks = false;
             powerUp.Brick(block.gameObject);
         }
         lastBlock = block.gameObject;
@@ -190,9 +230,30 @@ public class GameLoop : MonoBehaviour
 
     private void Thunder()
     {
-        Debug.Log("ZEUS");
         lastBlock.transform.position = trash.position;
         this.current_health++;
+    }
+
+    private void CheckScoreForPowerUp()
+    {
+        if(this.score >= this.next_score_for_pwr)
+        {
+            AddPowerUp();
+            this.next_score_for_pwr += this.next_score_for_pwr_add_value;
+        }
+    }
+
+    private void AddPowerUp()
+    {
+        Array values = Enum.GetValues(typeof(PowerUp.Powerups));
+        System.Random random = new System.Random();
+        int rand = random.Next(values.Length);
+        
+        //Avoid getting "None"
+        while (rand == 0)
+            rand = random.Next(values.Length);
+
+        this.current_powerup = (PowerUp.Powerups)values.GetValue(rand);
     }
 
     #endregion
@@ -253,6 +314,16 @@ public class GameLoop : MonoBehaviour
     public int GetCurrentHealth()
     {
         return this.current_health;
+    }
+
+    public PowerUp.Powerups GetCurrentPowerUp()
+    {
+        return this.current_powerup;
+    }
+
+    public int GetNextScoreForPowerUp()
+    {
+        return next_score_for_pwr;
     }
     #endregion
 }
