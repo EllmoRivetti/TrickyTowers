@@ -18,8 +18,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject loose_panel;
 
-
-    // Update is called once per frame
     void Update()
     {
         score_value.text = gameLoop.GetScore().ToString();

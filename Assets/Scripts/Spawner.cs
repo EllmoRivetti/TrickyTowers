@@ -17,7 +17,6 @@ public class Spawner : MonoBehaviour
         y_start = this.transform.position.y;
     }
 
-
     public GameObject AddTetromino()
     {
         GameObject tetromino = Tetrominos[UnityEngine.Random.Range(0, Tetrominos.Length)];
@@ -26,6 +25,7 @@ public class Spawner : MonoBehaviour
         return Instantiate(tetromino, transform.position, Quaternion.identity, container.transform);
     }
 
+    //Essai de mouvement de caméra avec des raycasts. Jugé trop couteux en ressources, une nouvelle solution a été décidée.
     private void FixedUpdate()
     {
         /*Debug.Log(transform.position);
@@ -76,8 +76,6 @@ public class Spawner : MonoBehaviour
         {
             Debug.Log("No bricks everywhere");
         }*/
-
-
     }
 
     public int getIdNb()

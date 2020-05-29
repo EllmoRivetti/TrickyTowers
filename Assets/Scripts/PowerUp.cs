@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum Powerups
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        None,
+        Roots,
+        Bricks,
+        Thunder
     }
 
     public void ActivateRoot(GameObject main, List<GameObject> blocklist, List<int> listId)
@@ -39,12 +35,12 @@ public class PowerUp : MonoBehaviour
         main.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
-    public enum Powerups
+    public void Thunder(GameObject lastBlock)
     {
-        None,
-        Roots,
-        Bricks,
-        Thunder
+        if(lastBlock != null)
+            Destroy(lastBlock);
     }
+
+    
 
 }

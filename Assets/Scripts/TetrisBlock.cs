@@ -144,7 +144,6 @@ public class TetrisBlock : MonoBehaviour
             if(!idList.Contains(col.GetComponent<TetrisBlock>().GetID()))
             {
                 idList.Add(col.GetComponent<TetrisBlock>().GetID());
-                Debug.Log(idList.Count);
             }
         }
     }

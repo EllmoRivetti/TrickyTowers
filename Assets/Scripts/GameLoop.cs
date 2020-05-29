@@ -6,46 +6,54 @@ using UnityEngine;
 [RequireComponent(typeof(PowerUp))]
 public class GameLoop : MonoBehaviour
 {
+    //Object where the tetrominos will spawn 
     public Spawner spawner;
+
+    //The game camera
     public Camera camera;
 
-    private List<GameObject> blockList;
-    private bool currentBlock = false;
-    private GameObject lastBlock;
-
+    //The game object used to store tetrominos
     [SerializeField]
     private GameObject tetrominos_parent;
+
+    //All the tetrominos in the current game
+    private List<GameObject> blockList;
+
+    //The current falling block
+    private bool currentBlock = false;
+
+    //The last block placed
+    private GameObject lastBlock;
+
+    //Power up object
     private PowerUp powerUp;
-    public Transform trash;
 
-
+    //Camera and spawner up distance
     private float up_distance;
+    //Camera and spawner down distance
     private float down_distance;
-
 
     //Player Stats
     public int max_health;
     private int current_health;
 
+    //Cooldown stats for hp loss
     private float last_loss_brick_time;
-
     private float cooldown_duration = 3f;
 
-    private int score ;
+    private int score;
 
+    //Powerup stats
     private int next_score_for_pwr;//Next score value needed to have power up 
     private int next_score_for_pwr_add_value = 15; //Value used to add new score objective (default +15)
 
+    //powerup bool activation
     private bool root = false;
     private bool bricks = false;
 
     private PowerUp.Powerups current_powerup;
 
-    
-
-
-
-    //Instanciation
+    #region Game Instanciation
     void Start()
     {
         blockList = new List<GameObject>();
@@ -62,7 +70,7 @@ public class GameLoop : MonoBehaviour
         last_loss_brick_time = Time.time + cooldown_duration;
 
         //Set current power up
-        current_powerup = PowerUp.Powerups.Roots;
+        current_powerup = PowerUp.Powerups.None;
 
         //Spawn first brick
         Spawn();
@@ -86,39 +94,7 @@ public class GameLoop : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         };
     }
-    /*public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (root)
-            {
-                Debug.Log("root désactivée");
-            }
-            else
-            {
-                Debug.Log("root activée");
-            }
-            root = !root;
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (bricks)
-            {
-                Debug.Log("bricks désactivée");
-            }
-            else
-            {
-                Debug.Log("bricks activée");
-            }
-            bricks = !bricks;
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Thunder();
-        }
-    }*/
+    #endregion
 
     #region Game Loop
     void Update()
@@ -126,23 +102,18 @@ public class GameLoop : MonoBehaviour
         //Check for powerup application
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Space pressed");
             switch (this.current_powerup)
             {
                 case PowerUp.Powerups.Roots:
-                    Debug.Log("Roots !");
                     root = true;
                     break;
                 case PowerUp.Powerups.Thunder:
-                    Debug.Log("Thunder !");
-                    Thunder();
+                    LaunchThunder();
                     break;
                 case PowerUp.Powerups.Bricks:
-                    Debug.Log("Bricks !");
                     bricks = true;
                     break;
                 default:
-                    Debug.Log("None...");
                     break;
             }
 
@@ -173,7 +144,7 @@ public class GameLoop : MonoBehaviour
         }
                
     }
-   
+
     void Spawn()
     {
         if (!currentBlock)
@@ -228,10 +199,10 @@ public class GameLoop : MonoBehaviour
         }
     }
 
-    private void Thunder()
+    void LaunchThunder()
     {
-        lastBlock.transform.position = trash.position;
-        this.current_health++;
+        blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID() == this.lastBlock.GetComponent<TetrisBlock>().GetID())); //
+        this.powerUp.Thunder(this.lastBlock);
     }
 
     private void CheckScoreForPowerUp()
