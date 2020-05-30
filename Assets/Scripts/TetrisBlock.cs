@@ -21,6 +21,12 @@ public class TetrisBlock : MonoBehaviour
     private int m_Max_height;
     List<GameObject> currentCollisions;
 
+    [SerializeField]
+    private GameObject chains;
+
+    [SerializeField]
+    private GameObject bricks;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +36,7 @@ public class TetrisBlock : MonoBehaviour
         tag = "moving";
         ID = FindObjectsOfType<Spawner>()[0].getIdNb();
         currentCollisions = new List<GameObject>();
-        radius = (float) (blocks[0].GetComponent<Renderer>().bounds.size[0] * Math.Sqrt(2)/2);
+        radius = (float)(blocks[0].GetComponent<Renderer>().bounds.size[0] * Math.Sqrt(2) / 2);
         idList = new List<int>();
         playable = true;
 
@@ -64,7 +70,7 @@ public class TetrisBlock : MonoBehaviour
             }
         }
 
-        
+
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -74,7 +80,7 @@ public class TetrisBlock : MonoBehaviour
             m_hasToCollide = false;
 
             ActionOnCollide(col);
-        }        
+        }
     }
 
     private void OnCollisionExit2D(Collision2D col)
@@ -92,7 +98,7 @@ public class TetrisBlock : MonoBehaviour
         playable = false;
         //this.enabled = false;
         //this.GetComponent<TetrisBlock>().enabled = false;
-      
+
     }
 
     public void TouchedRemover()
@@ -119,7 +125,7 @@ public class TetrisBlock : MonoBehaviour
     public bool IsTetrisBlock(GameObject go)
     {
         return go.GetComponent<TetrisBlock>() != null;
-        
+
     }
 
     public void CheckColliders()
@@ -139,9 +145,9 @@ public class TetrisBlock : MonoBehaviour
         if (listCollider.Find(x => x.GetComponent<TetrisBlock>().GetID() == this.GetID()))
             listCollider.RemoveAll(x => x.GetComponent<TetrisBlock>().GetID() == this.GetID());
 
-        foreach(Collider2D col in listCollider)
+        foreach (Collider2D col in listCollider)
         {
-            if(!idList.Contains(col.GetComponent<TetrisBlock>().GetID()))
+            if (!idList.Contains(col.GetComponent<TetrisBlock>().GetID()))
             {
                 idList.Add(col.GetComponent<TetrisBlock>().GetID());
             }
@@ -152,7 +158,17 @@ public class TetrisBlock : MonoBehaviour
     {
         return idList;
     }
-    
+
+    public void ActiveBricks()
+    {
+        this.bricks.SetActive(true);
+    }
+
+    public void ActiveChains()
+    {
+        this.chains.SetActive(true);
+    }
+
 
 
     public event EventHandler TouchGround;

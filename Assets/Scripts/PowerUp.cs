@@ -7,15 +7,15 @@ public class PowerUp : MonoBehaviour
     public enum Powerups
     {
         None,
-        Roots,
+        Chains,
         Bricks,
         Thunder
     }
 
-    public void ActivateRoot(GameObject main, List<GameObject> blocklist, List<int> listId)
+    public void ActivateChains(GameObject main, List<GameObject> blocklist, List<int> listId)
     {
         List<GameObject> newList = new List<GameObject>();
-        foreach(GameObject go in blocklist)
+        foreach (GameObject go in blocklist)
         {
             if (listId.Contains(go.GetComponent<TetrisBlock>().GetID()))
             {
@@ -23,11 +23,13 @@ public class PowerUp : MonoBehaviour
             }
         }
 
-        foreach(GameObject go in newList)
+        foreach (GameObject go in newList)
         {
+            go.GetComponent<TetrisBlock>().ActiveChains();
             main.AddComponent<FixedJoint2D>();
             main.GetComponent<FixedJoint2D>().connectedBody = go.GetComponent<Rigidbody2D>();
         }
+        main.GetComponent<TetrisBlock>().ActiveChains();
     }
 
     public void Brick(GameObject main)
@@ -37,10 +39,10 @@ public class PowerUp : MonoBehaviour
 
     public void Thunder(GameObject lastBlock)
     {
-        if(lastBlock != null)
+        if (lastBlock != null)
             Destroy(lastBlock);
     }
 
-    
+
 
 }

@@ -16,11 +16,14 @@ public class GameLoop : MonoBehaviour
     [SerializeField]
     private GameObject tetrominos_parent;
 
+    [SerializeField]
+    private GameObject current_tetrominos;
+
     //All the tetrominos in the current game
     private List<GameObject> blockList;
 
     //The current falling block
-    private bool currentBlock = false;
+    private bool isCurrentBlock = false;
 
     //The last block placed
     private GameObject lastBlock;
@@ -48,7 +51,7 @@ public class GameLoop : MonoBehaviour
     private int next_score_for_pwr_add_value = 15; //Value used to add new score objective (default +15)
 
     //powerup bool activation
-    private bool root = false;
+    private bool chains = false;
     private bool bricks = false;
 
     private PowerUp.Powerups current_powerup;
@@ -70,7 +73,7 @@ public class GameLoop : MonoBehaviour
         last_loss_brick_time = Time.time + cooldown_duration;
 
         //Set current power up
-        current_powerup = PowerUp.Powerups.None;
+        current_powerup = PowerUp.Powerups.Bricks;
 
         //Spawn first brick
         Spawn();
@@ -82,7 +85,7 @@ public class GameLoop : MonoBehaviour
         {
             GameObject.Destroy(child.gameObject);
         }
-        currentBlock = false;
+        isCurrentBlock = false;
         Start();
     }
 
@@ -104,14 +107,14 @@ public class GameLoop : MonoBehaviour
         {
             switch (this.current_powerup)
             {
-                case PowerUp.Powerups.Roots:
-                    root = true;
+                case PowerUp.Powerups.Chains:
+                    LaunchChains();
                     break;
                 case PowerUp.Powerups.Thunder:
                     LaunchThunder();
                     break;
                 case PowerUp.Powerups.Bricks:
-                    bricks = true;
+                    LaunchBricks();
                     break;
                 default:
                     break;
@@ -147,13 +150,13 @@ public class GameLoop : MonoBehaviour
 
     void Spawn()
     {
-        if (!currentBlock)
+        if (!isCurrentBlock)
         {
-            GameObject block = spawner.AddTetromino();
-            block.GetComponent<TetrisBlock>().TouchGround += OnTouchGround;
-            block.GetComponent<TetrisBlock>().TouchRemover += OnTouchRemover;
-            blockList.Add(block);
-            currentBlock = true;
+            current_tetrominos = spawner.AddTetromino();
+            current_tetrominos.GetComponent<TetrisBlock>().TouchGround += OnTouchGround;
+            current_tetrominos.GetComponent<TetrisBlock>().TouchRemover += OnTouchRemover;
+            blockList.Add(current_tetrominos);
+            isCurrentBlock = true;
         }
     }
 
@@ -161,7 +164,7 @@ public class GameLoop : MonoBehaviour
     {
         TetrisBlock block = sender as TetrisBlock;
         block.TouchGround -= OnTouchGround;
-        currentBlock = false;
+        isCurrentBlock = false;
 
         if (block.transform.position.y + 17 > score) // Harcoded value to create a coherent score (pas fou je sais)
         {
@@ -169,11 +172,11 @@ public class GameLoop : MonoBehaviour
             CheckScoreForPowerUp();
         }
 
-        if (root)
+        if (chains)
         {
-            root = false;
+            chains = false;
             if (block.GetIdList().Count > 0)
-                powerUp.ActivateRoot(block.gameObject, blockList, block.GetIdList());
+                powerUp.ActivateChains(block.gameObject, blockList, block.GetIdList());
         }
         if (bricks)
         {
@@ -189,7 +192,7 @@ public class GameLoop : MonoBehaviour
         TetrisBlock block = sender as TetrisBlock;
         GameObject go = sender as GameObject;
         block.TouchRemover -= OnTouchRemover;
-        currentBlock = false;
+        isCurrentBlock = false;
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID()== block.GetID()));
 
         if(Time.time > last_loss_brick_time)
@@ -203,6 +206,18 @@ public class GameLoop : MonoBehaviour
     {
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID() == this.lastBlock.GetComponent<TetrisBlock>().GetID())); //
         this.powerUp.Thunder(this.lastBlock);
+    }
+
+    void LaunchChains()
+    {
+        this.current_tetrominos.GetComponent<TetrisBlock>().ActiveChains();
+        chains = true;
+    }
+
+    void LaunchBricks()
+    {
+        this.current_tetrominos.GetComponent<TetrisBlock>().ActiveBricks();
+        bricks = true;
     }
 
     private void CheckScoreForPowerUp()
