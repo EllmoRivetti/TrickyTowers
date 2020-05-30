@@ -48,7 +48,7 @@ public class GameLoop : MonoBehaviour
 
     //Powerup stats
     private int next_score_for_pwr;//Next score value needed to have power up 
-    private int next_score_for_pwr_add_value = 15; //Value used to add new score objective (default +15)
+    private int next_score_for_pwr_add_value = 10; //Value used to add new score objective (default +10)
 
     //powerup bool activation
     private bool chains = false;
@@ -73,7 +73,7 @@ public class GameLoop : MonoBehaviour
         last_loss_brick_time = Time.time + cooldown_duration;
 
         //Set current power up
-        current_powerup = PowerUp.Powerups.Bricks;
+        current_powerup = PowerUp.Powerups.None;
 
         //Spawn first brick
         Spawn();
@@ -240,6 +240,7 @@ public class GameLoop : MonoBehaviour
             rand = random.Next(values.Length);
 
         this.current_powerup = (PowerUp.Powerups)values.GetValue(rand);
+        //this.current_powerup = PowerUp.Powerups.Bricks; //Used for debug
     }
 
     #endregion
