@@ -155,6 +155,7 @@ public class GameLoop : MonoBehaviour
         if (!isCurrentBlock)
         {
             current_tetrominos = spawner.AddTetromino();
+            //Ajout des triggers sur le tetromino venant d'être crée ainsi qu'à la liste des tetrominos en jeu
             current_tetrominos.GetComponent<TetrisBlock>().TouchGround += OnTouchGround;
             current_tetrominos.GetComponent<TetrisBlock>().TouchRemover += OnTouchRemover;
             blockList.Add(current_tetrominos);

@@ -8,7 +8,6 @@ public class Remover : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<TetrisBlock>().m_hasToCollide)
         {
-            //collision.gameObject.GetComponent<TetrisBlock>().m_hasToCollide = false;
             collision.gameObject.GetComponent<TetrisBlock>().ActionOnCollide(null);
             
         }
