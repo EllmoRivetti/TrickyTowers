@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(PowerUp))]
 public class GameLoop : MonoBehaviour
 {
+    #region Class Attributes
     //Object where the tetrominos will spawn 
     public Spawner spawner;
 
@@ -55,6 +56,7 @@ public class GameLoop : MonoBehaviour
     private bool bricks = false;
 
     private PowerUp.Powerups current_powerup;
+    #endregion
 
     #region Game Instanciation
     void Start()
@@ -171,17 +173,18 @@ public class GameLoop : MonoBehaviour
             this.score = (int)block.transform.position.y + 17;
             CheckScoreForPowerUp();
         }
-
         if (chains)
         {
             chains = false;
             if (block.GetIdList().Count > 0)
+            {
                 powerUp.ActivateChains(block.gameObject, blockList, block.GetIdList());
+            }
         }
         if (bricks)
         {
             bricks = false;
-            powerUp.Brick(block.gameObject);
+            powerUp.ActiveBrick(block.gameObject);
         }
         lastBlock = block.gameObject;
         Spawn();        
@@ -205,7 +208,7 @@ public class GameLoop : MonoBehaviour
     void LaunchThunder()
     {
         blockList.Remove(blockList.Find(x => x.GetComponent<TetrisBlock>().GetID() == this.lastBlock.GetComponent<TetrisBlock>().GetID())); //
-        this.powerUp.Thunder(this.lastBlock);
+        this.powerUp.ActiveThunder(this.lastBlock);
     }
 
     void LaunchChains()

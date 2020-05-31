@@ -32,17 +32,14 @@ public class PowerUp : MonoBehaviour
         main.GetComponent<TetrisBlock>().ActiveChains();
     }
 
-    public void Brick(GameObject main)
+    public void ActiveBrick(GameObject main)
     {
         main.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
-    public void Thunder(GameObject lastBlock)
+    public void ActiveThunder(GameObject lastBlock)
     {
         if (lastBlock != null)
             Destroy(lastBlock);
     }
-
-
-
 }

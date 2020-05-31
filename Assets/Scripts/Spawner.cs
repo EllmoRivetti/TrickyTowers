@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-
+    #region Class Attributes
     public GameObject[] Tetrominos;
     public GameObject container;
     static int iDBlock = 0;
 
     private float y_start;
+    #endregion
 
     private void Start()
     {

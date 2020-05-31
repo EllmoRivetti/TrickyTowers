@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TetrisBlock : MonoBehaviour
 {
+    #region Class Attributes
     public Vector3 rotationPoint;
     public Transform[] blocks;
     public LayerMask tetrominoLayer;
@@ -26,9 +27,8 @@ public class TetrisBlock : MonoBehaviour
 
     [SerializeField]
     private GameObject bricks;
+    #endregion
 
-
-    // Start is called before the first frame update
     void Start()
     {
         this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
@@ -42,7 +42,6 @@ public class TetrisBlock : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (playable)
@@ -69,8 +68,6 @@ public class TetrisBlock : MonoBehaviour
                 this.GetComponent<Rigidbody2D>().drag = GetDragFromAcceleration(Physics.gravity.magnitude, m_DragValue);
             }
         }
-
-
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -81,11 +78,6 @@ public class TetrisBlock : MonoBehaviour
 
             ActionOnCollide(col);
         }
-    }
-
-    private void OnCollisionExit2D(Collision2D col)
-    {
-
     }
 
     public void ActionOnCollide(Collision2D col)
@@ -138,7 +130,6 @@ public class TetrisBlock : MonoBehaviour
 
     }
 
-
     public void CheckColliderList(List<Collider2D> listCollider, Collider2D[] array)
     {
         listCollider.AddRange(array);
@@ -168,8 +159,6 @@ public class TetrisBlock : MonoBehaviour
     {
         this.chains.SetActive(true);
     }
-
-
 
     public event EventHandler TouchGround;
     public event EventHandler TouchRemover;
